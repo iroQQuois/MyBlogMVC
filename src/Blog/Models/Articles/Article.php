@@ -1,5 +1,7 @@
 <?php
 
+/* Класс статей */
+
 namespace Blog\Models\Articles;
 
 use Blog\Models\Users\User;

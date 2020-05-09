@@ -4,7 +4,7 @@ function myAutoLoader(string $className)
 require_once __DIR__ . '/../src/' . $className . '.php';
 }
 
-spl_autoload_register('myAutoLoader');
+spl_autoload_register('myAutoLoader'); # автозагрузка неймспейсов
 
 $author = new \Blog\Models\Users\User('Иван');
 $article = new \Blog\Models\Articles\Article('Заголовок', 'Текст', $author);

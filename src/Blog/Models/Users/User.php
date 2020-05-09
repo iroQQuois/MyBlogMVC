@@ -1,5 +1,7 @@
 <?php
 
+/* класс пользователя */
+
 namespace Blog\Models\Users;
 
 class User
