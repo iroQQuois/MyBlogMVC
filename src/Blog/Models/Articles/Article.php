@@ -1,38 +1,60 @@
 <?php
 
-/* Класс статей */
+/* Класс статей, реализация ORM */
 
 namespace Blog\Models\Articles;
 
 use Blog\Models\Users\User;
 
-
 class Article
 {
-    private $title;
-    private $author;
+    /** @var int */
+    private $id;
+
+    /** @var string */
+    private $name;
+
+    /** @var string */
     private $text;
 
-    public function __construct(string $title, string $text, User $author)
+    /** @var int */
+    private $authorId;
+
+    /** @var string */
+    private $createdAt;
+
+    public function __set($name, $value)
     {
-        $this->title = $title;
-        $this->text = $text;
-        $this->author = $author;
+        $camelCaseName = $this->underscoreToCamelCase($name);
+        $this->$camelCaseName = $value;
     }
 
-    public function getTitle()
+    /**
+     * @return int
+     */
+    public function getId(): int
     {
-        return $this->title;
+        return $this->id;
     }
 
-    public function getText()
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getText(): string
     {
         return $this->text;
     }
 
-    public function getAuthor(): User
+    private function underscoreToCamelCase(string $source): string
     {
-        return $this->author;
+        return lcfirst(str_replace('_', '', ucwords($source, '_')));
     }
-
 }

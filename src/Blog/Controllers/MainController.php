@@ -4,12 +4,13 @@
 
 namespace Blog\Controllers;
 
-use Blog\View\View;
+use Blog\Models\Articles\Article;
 use Blog\Services\Db;
+use Blog\View\View;
 
 class MainController
 {
-    /** @var View  */
+    /** @var View */
     private $view;
 
     /** @var Db */
@@ -23,12 +24,7 @@ class MainController
 
     public function main()
     {
-        $articles = $this->db->query('SELECT * FROM `articles`;');
+        $articles = $this->db->query('SELECT * FROM `articles`;', [], Article::class);
         $this->view->renderHtml('main/main.php', ['articles' => $articles]);
-    }
-
-    public function sayHello(string $name)
-    {
-        $this->view->renderHtml('main/hello.php', ['name' => $name]);
     }
 }
