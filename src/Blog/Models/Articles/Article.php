@@ -1,41 +1,19 @@
 <?php
-
-/* Класс статей, реализация ORM */
-
 namespace Blog\Models\Articles;
 
+use Blog\Models\ActiveRecordEntity;
 use Blog\Models\Users\User;
 
-class Article
+class Article extends ActiveRecordEntity
 {
-    /** @var int */
-    private $id;
+    /** @var string */
+    protected string $name;
 
     /** @var string */
-    private $name;
+    protected string $text;
 
     /** @var string */
-    private $text;
-
-    /** @var int */
-    private $authorId;
-
-    /** @var string */
-    private $createdAt;
-
-    public function __set($name, $value)
-    {
-        $camelCaseName = $this->underscoreToCamelCase($name);
-        $this->$camelCaseName = $value;
-    }
-
-    /**
-     * @return int
-     */
-    public function getId(): int
-    {
-        return $this->id;
-    }
+    protected string $authorId;
 
     /**
      * @return string
@@ -53,8 +31,16 @@ class Article
         return $this->text;
     }
 
-    private function underscoreToCamelCase(string $source): string
+    protected static function getTableName(): string
     {
-        return lcfirst(str_replace('_', '', ucwords($source, '_')));
+        return 'articles';
+    }
+
+    /**
+     * @return User
+     */
+    public function getAuthor(): User
+    {
+        return User::getById($this->authorId);
     }
 }

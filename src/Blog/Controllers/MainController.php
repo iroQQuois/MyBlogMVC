@@ -5,26 +5,23 @@
 namespace Blog\Controllers;
 
 use Blog\Models\Articles\Article;
-use Blog\Services\Db;
 use Blog\View\View;
 
 class MainController
 {
-    /** @var View */
+    /** @var View*/
     private $view;
 
-    /** @var Db */
-    private $db;
 
     public function __construct()
     {
         $this->view = new View(__DIR__ . '/../../../templates');
-        $this->db = new Db();
     }
 
     public function main()
     {
-        $articles = $this->db->query('SELECT * FROM `articles`;', [], Article::class);
+        $articles = Article::findAll();
         $this->view->renderHtml('main/main.php', ['articles' => $articles]);
     }
+
 }
