@@ -1,5 +1,7 @@
 <?php
 
+/* вызов статей из бд по id и автору */
+
 namespace Blog\Models;
 
 use Blog\Services\Db;
@@ -33,11 +35,10 @@ abstract class ActiveRecordEntity
      */
     public static function findAll(): array
     {
-        $db = new Db();
+        $db = Db::getInstance();
         return $db->query('SELECT * FROM `' . static::getTableName() . '`;', [], static::class);
     }
 
-    abstract protected static function getTableName(): string;
 
     /**
      * @param int $id
@@ -45,7 +46,7 @@ abstract class ActiveRecordEntity
      */
     public static function getById(int $id): ?self
     {
-        $db = new Db();
+        $db = Db::getInstance();
         $entities = $db->query(
             'SELECT * FROM `' . static::getTableName() . '` WHERE id=:id;',
             [':id' => $id],
@@ -53,4 +54,6 @@ abstract class ActiveRecordEntity
         );
         return $entities ? $entities[0] : null;
     }
+
+    abstract protected static function getTableName(): string;
 }
