@@ -4,5 +4,6 @@
 
 return [
     '~^articles/(\d+)$~' => [\Blog\Controllers\ArticlesController::class, 'view'],
+    '~^articles/(\d+)/edit$~' => [\Blog\Controllers\ArticlesController::class, 'edit'],
     '~^$~' => [\Blog\Controllers\MainController::class, 'main'],
 ];

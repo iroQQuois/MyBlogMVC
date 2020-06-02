@@ -17,20 +17,33 @@ class ArticlesController
         $this->view = new View(__DIR__ . '/../../../templates');
     }
 
-    public function view(int $articleId)
+    public function view(int $articleId): void
     {
         $article = Article::getById($articleId);
 
-        $reflector = new \ReflectionObject($article);
-        $properties = $reflector->getProperties();
-        $propertiesNames = [];
-        foreach ($properties as $property)
-        {
-            $propertiesNames[] = $property->getName();
+        if ($article === null) {
+            $this->view->renderHtml('errors/404.php', [], 404);
+            return;
         }
-        var_dump($propertiesNames);
-        return;
 
-        $this->view->renderHtml('articles/view.php', ['article' => $article]);
+        $this->view->renderHtml('articles/view.php', [
+            'article' => $article
+        ]);
     }
+
+    public function edit(int $articleId): void
+    {
+        $article = Article::getById($articleId);
+
+        if ($article === null) {
+            $this->view->renderHtml('errors/404.php', [], 404);
+            return;
+        }
+
+        $article->setName('Новое название статьи');
+        $article->setText('Новый текст статьи');
+
+        $article->save();
+    }
+
 }
