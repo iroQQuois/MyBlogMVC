@@ -23,7 +23,12 @@ class ArticlesController
 
         $reflector = new \ReflectionObject($article);
         $properties = $reflector->getProperties();
-        var_dump($properties);
+        $propertiesNames = [];
+        foreach ($properties as $property)
+        {
+            $propertiesNames[] = $property->getName();
+        }
+        var_dump($propertiesNames);
         return;
 
         $this->view->renderHtml('articles/view.php', ['article' => $article]);
