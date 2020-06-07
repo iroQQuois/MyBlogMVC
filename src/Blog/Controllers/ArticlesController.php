@@ -4,6 +4,7 @@
 
 namespace Blog\Controllers;
 
+use Blog\Exceptions\NotFoundException;
 use Blog\Models\Articles\Article;
 use Blog\Models\Users\User;
 use Blog\View\View;
@@ -23,8 +24,7 @@ class ArticlesController
         $article = Article::getById($articleId);
 
         if ($article === null) {
-            $this->view->renderHtml('errors/404.php', [], 404);
-            return;
+           throw new NotFoundException();
         }
 
         $this->view->renderHtml('articles/view.php', [
@@ -37,8 +37,7 @@ class ArticlesController
         $article = Article::getById($articleId);
 
         if ($article === null) {
-            $this->view->renderHtml('errors/404.php', [], 404);
-            return;
+            throw new NotFoundException();
         }
 
         $article->setName('Новое название статьи');

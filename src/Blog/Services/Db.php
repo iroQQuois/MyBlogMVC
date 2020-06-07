@@ -4,6 +4,8 @@
 
 namespace Blog\Services;
 
+use Blog\Exceptions\DbException;
+
 class Db
 {
     private static $instance;
@@ -14,13 +16,18 @@ class Db
     private function __construct() # коннект к бд с помощью PDO
     {
         $dbOptions = (require __DIR__ . '/../../settings.php')['db'];
-
-        $this->pdo = new \PDO(
-            'mysql:host=' . $dbOptions['host'] . ';dbname=' . $dbOptions['dbname'],
-            $dbOptions['user'],
-            $dbOptions['password']
-        );
-        $this->pdo->exec('SET NAME UTF8');
+        try
+        {
+            $this->pdo = new \PDO(
+                'mysql:host=' . $dbOptions['host'] . ';dbname=' . $dbOptions['dbname'],
+                $dbOptions['user'],
+                $dbOptions['password']
+            );
+            $this->pdo->exec('SET NAME UTF8');
+        } catch (\PDOException $e)
+        {
+            throw new DbException('Ошибка при подключении к базе данных: ' . $e->getMessage());
+        }
     }
 
     public function query(string $sql, array $params = [], string $className = 'stdClass'): ?array
