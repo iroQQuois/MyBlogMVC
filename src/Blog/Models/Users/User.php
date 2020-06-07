@@ -41,4 +41,19 @@ class User extends ActiveRecordEntity
     {
         return 'users';
     }
+
+    public static function signUp(array $userData)
+    {
+        if (empty($userData['nickname'])) {
+            throw new InvalidArgumentException('Не передан nickname');
+        }
+
+        if (empty($userData['email'])) {
+            throw new InvalidArgumentException('Не передан email');
+        }
+
+        if (empty($userData['password'])) {
+            throw new InvalidArgumentException('Не передан password');
+        }
+    }
 }
