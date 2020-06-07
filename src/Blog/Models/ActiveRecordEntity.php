@@ -87,7 +87,27 @@ abstract class ActiveRecordEntity
 
     private function insert(array $mappedProperties): void
     {
-        // TODO: написать insert
+        $filteredProperties = array_filter($mappedProperties); // сортируем столбцы из таблицы со значением null
+
+        $columns = [];
+        $paramsNames = [];
+        $params2values = [];
+        foreach ($filteredProperties as $columnName => $value)
+        {
+            $columns[] = '`' . $columnName . '`';
+            $paramName = ':' . $columnName;
+            $paramsNames[] = $paramName;
+            $params2values[$paramName] = $value;
+        }
+
+        $columnsViaSemicolon = implode(', ', $columns);
+        $paramsNamesViaSemicolon = implode(', ', $paramsNames);
+
+        $sql = 'INSERT INTO ' . static::getTableName() . ' (' . $columnsViaSemicolon . ') VALUES (' . $paramsNamesViaSemicolon . ');';
+
+        $db = Db::getInstance();
+        $db->query($sql, $params2values, static::class);
+        $this->id = $db->getLastInsertId();
     }
 
     private function mapPropertiesToDbFormat(): array
