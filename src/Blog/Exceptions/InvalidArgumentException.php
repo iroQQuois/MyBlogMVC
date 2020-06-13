@@ -1,8 +1,6 @@
 <?php
 
-
-namespace Blog\Exceptions;
-
+namespace MyProject\Exceptions;
 
 class InvalidArgumentException extends \Exception
 {
