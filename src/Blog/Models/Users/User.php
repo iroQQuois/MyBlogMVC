@@ -95,4 +95,9 @@ class User extends ActiveRecordEntity
         return $user;
 
     }
+
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
 }
